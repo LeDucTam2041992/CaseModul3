@@ -75,15 +75,15 @@ public class ProductDAO implements IProductDAO {
             preparedStatement.setString(1, productId);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
-                specSmartphone.add(new String[]{"Màn Hình", rs.getString("screen")});
-                specSmartphone.add(new String[]{"Hệ Điều Hành", rs.getString("operaSystem")});
-                specSmartphone.add(new String[]{"Camera Trước", rs.getString("cameraFont")});
-                specSmartphone.add(new String[]{"Camera Sau", rs.getString("cameraEnd")});
+                specSmartphone.add(new String[]{"SCREEN", rs.getString("screen")});
+                specSmartphone.add(new String[]{"OPERA SYSTEM", rs.getString("operaSystem")});
+                specSmartphone.add(new String[]{"CAMERA FONT", rs.getString("cameraFont")});
+                specSmartphone.add(new String[]{"CAMERA BACK", rs.getString("cameraEnd")});
                 specSmartphone.add(new String[]{"CPU", rs.getString("cpu")});
                 specSmartphone.add(new String[]{"RAM", rs.getString("ram")});
-                specSmartphone.add(new String[]{"Bộ Nhớ Trong", rs.getString("memory")});
-                specSmartphone.add(new String[]{"Sim", rs.getString("sim")});
-                specSmartphone.add(new String[]{"Pin", rs.getString("pin")});
+                specSmartphone.add(new String[]{"MEMORY", rs.getString("memory")});
+                specSmartphone.add(new String[]{"SIM", rs.getString("sim")});
+                specSmartphone.add(new String[]{"PIN", rs.getString("pin")});
             }
         } catch (SQLException e) {
             printSQLException(e);

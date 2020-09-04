@@ -6,5 +6,7 @@ model/Product.java
  model.Product
 controller/Servlet.java
  controller.Servlet
+CharsetFilter.java
+ CharsetFilter
 productDAO/IProductDAO.java
  productDAO.IProductDAO
