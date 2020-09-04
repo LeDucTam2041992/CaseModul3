@@ -1,6 +1,7 @@
 package controller;
 
 import model.Product;
+import model.SpecSmartphone;
 import productDAO.ProductDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -60,7 +61,9 @@ public class Servlet extends HttpServlet {
     private void showProduct(HttpServletRequest request, HttpServletResponse response) {
         String id = request.getParameter("id");
         Product product = productDAO.selectProduct(id);
-        List<String> producers = productDAO.selectAllProducer();
+        List<String> producers = productDAO.selectAllProducer(product.getSpecial());
+        List<String[]> specSmartphone = productDAO.selectSpecSm(id);
+        request.setAttribute("specifications", specSmartphone);
         request.setAttribute("producers", producers);
         request.setAttribute("product", product);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/ProductDetail.jsp");
@@ -73,9 +76,15 @@ public class Servlet extends HttpServlet {
         }
     }
 
+
+
     private void listProducts(HttpServletRequest request, HttpServletResponse response) {
-        List<Product> listProduct = productDAO.selectAlProduct();
-        List<String> producers = productDAO.selectAllProducer();
+        String special = request.getParameter("special");
+        if(special == null){
+            special = "smartphone";
+        }
+        List<Product> listProduct = productDAO.selectAlProduct(special);
+        List<String> producers = productDAO.selectAllProducer(special);
         request.setAttribute("producers", producers);
         request.setAttribute("listProduct", listProduct);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/listProduct.jsp");

@@ -7,26 +7,26 @@
       <DefaultTmpEngine>InnoDB</DefaultTmpEngine>
       <DefaultCasing>lower/lower</DefaultCasing>
     </root>
-    <schema id="2" parent="1" name="casemd3">
+    <schema id="2" parent="1" name="demo">
       <Current>1</Current>
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
-    <schema id="3" parent="1" name="classicmodels">
-      <Collation>latin1_swedish_ci</Collation>
-    </schema>
-    <schema id="4" parent="1" name="demo">
-      <Collation>utf8mb4_0900_ai_ci</Collation>
-    </schema>
-    <schema id="5" parent="1" name="information_schema">
+    <schema id="3" parent="1" name="information_schema">
       <Collation>utf8_general_ci</Collation>
     </schema>
-    <schema id="6" parent="1" name="mysql">
+    <schema id="4" parent="1" name="mysql">
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
-    <schema id="7" parent="1" name="performance_schema">
+    <schema id="5" parent="1" name="performance_schema">
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
-    <schema id="8" parent="1" name="sys">
+    <schema id="6" parent="1" name="sakila">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="7" parent="1" name="sys">
+      <Collation>utf8mb4_0900_ai_ci</Collation>
+    </schema>
+    <schema id="8" parent="1" name="world">
       <Collation>utf8mb4_0900_ai_ci</Collation>
     </schema>
     <collation id="9" parent="1" name="armscii8_bin">
@@ -911,32 +911,92 @@ SELECT|sys.sys_config:null
 </ObjectGrants>
     </user>
     <table id="285" parent="2" name="products"/>
-    <column id="286" parent="285" name="id">
+    <table id="286" parent="2" name="specsmartphone"/>
+    <column id="287" parent="285" name="id">
       <Position>1</Position>
       <DataType>varchar(10)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="287" parent="285" name="name">
+    <column id="288" parent="285" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="288" parent="285" name="imgUrl">
+    <column id="289" parent="285" name="imgUrl">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <column id="289" parent="285" name="price">
+    <column id="290" parent="285" name="price">
       <Position>4</Position>
       <DataType>int|0s</DataType>
     </column>
-    <column id="290" parent="285" name="producer">
+    <column id="291" parent="285" name="producer">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
     </column>
-    <key id="291" parent="285" name="PRIMARY">
+    <column id="292" parent="285" name="special">
+      <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <key id="293" parent="285" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
+    <column id="294" parent="286" name="productId">
+      <Position>1</Position>
+      <DataType>varchar(10)|0s</DataType>
+      <NotNull>1</NotNull>
+    </column>
+    <column id="295" parent="286" name="screen">
+      <Position>2</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="296" parent="286" name="operaSystem">
+      <Position>3</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="297" parent="286" name="cameraFont">
+      <Position>4</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="298" parent="286" name="cameraEnd">
+      <Position>5</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="299" parent="286" name="cpu">
+      <Position>6</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="300" parent="286" name="ram">
+      <Position>7</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="301" parent="286" name="memory">
+      <Position>8</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="302" parent="286" name="sim">
+      <Position>9</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <column id="303" parent="286" name="pin">
+      <Position>10</Position>
+      <DataType>varchar(255)|0s</DataType>
+    </column>
+    <index id="304" parent="286" name="productId_UNIQUE">
+      <ColNames>productId</ColNames>
+      <Unique>1</Unique>
+      <Type>btree</Type>
+    </index>
+    <key id="305" parent="286" name="productId_UNIQUE">
+      <ColNames>productId</ColNames>
+      <UnderlyingIndexName>productId_UNIQUE</UnderlyingIndexName>
+    </key>
+    <foreign-key id="306" parent="286" name="specsmartphone_ibfk_1">
+      <ColNames>productId</ColNames>
+      <RefTableName>products</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
   </database-model>
 </dataSource>

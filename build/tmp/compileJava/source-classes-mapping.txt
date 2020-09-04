@@ -1,5 +1,7 @@
 productDAO/ProductDAO.java
  productDAO.ProductDAO
+model/SpecSmartphone.java
+ model.SpecSmartphone
 model/Product.java
  model.Product
 controller/Servlet.java
