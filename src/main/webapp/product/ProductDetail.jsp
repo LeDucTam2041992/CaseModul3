@@ -80,8 +80,8 @@
                 <tbody>
                     <c:forEach items="${requestScope['specifications']}" var="specification">
                         <tr>
-                            <td scope="row">Dung lượng pin:</td>
-                            <td>Mark</td>
+                            <td scope="row">${specification[0]}</td>
+                            <td>${specification[1]}</td>
                         </tr>
                     </c:forEach>
                 </tbody>

@@ -67,10 +67,26 @@
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
-            <h3>${requestScope['product'].getName()}</h3>
+            <h5>${requestScope['product'].getName()}</h5>
             <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
         </div>
-        <div class="col-sm-6 border"></div>
+        <div class="col-sm-6 border">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Thong so ky thuat</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${requestScope['specifications']}" var="specification">
+                        <tr>
+                            <td scope="row">${specification[0]}</td>
+                            <td>${specification[1]}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 <footer class="footer bg-dark" style="height: 100px"></footer>
