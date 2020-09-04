@@ -16,9 +16,9 @@ public class ProductDAO implements IProductDAO {
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products" + "  (id, name, imgUrl, price) VALUES " +
             " (?, ?, ?);";
 
-    private static final String SELECT_ALL_PRODUCER = "select distinct producer from products";
+    private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
     private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special from products where id = ?";
-    private static final String SELECT_ALL_PRODUCTS = "select * from products";
+    private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
     private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =? where id = ?;";
@@ -91,19 +91,12 @@ public class ProductDAO implements IProductDAO {
         return specSmartphone;
     }
     @Override
-    public List<Product> selectAlProduct() {
-        // using try-with-resources to avoid closing resources (boiler plate code)
+    public List<Product> selectAlProduct(String special) {
         List<Product> products = new ArrayList<>();
-        // Step 1: Establishing a Connection
         try (Connection connection = getConnection();
-
-             // Step 2:Create a statement using connection object
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCTS);) {
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
+            preparedStatement.setString(1, special);
             ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
             while (rs.next()) {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
@@ -119,10 +112,11 @@ public class ProductDAO implements IProductDAO {
     }
 
     @Override
-    public List<String> selectAllProducer() {
+    public List<String> selectAllProducer(String special) {
         List<String> producers = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCER);) {
+            preparedStatement.setString(1,special);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String producer = rs.getString("producer");

@@ -26,17 +26,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link " href="#">Smartphone<span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link " href="/products?special=smartphone">Smartphone</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Laptop</a>
+                <a class="nav-link" href="/products?special=laptop">Laptop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Tablet</a>
+                <a class="nav-link" href="/products?special=tablet">Tablet</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Headphone</a>
+                <a class="nav-link" href="/products?special=headphone">Headphone</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -13,9 +13,9 @@ public interface IProductDAO {
 
     public List<String[]> selectSpecSm(String productId);
 
-    public List<Product> selectAlProduct();
+    public List<Product> selectAlProduct(String special);
 
-    public List<String> selectAllProducer();
+    public List<String> selectAllProducer(String special);
 
     public boolean deleteProduct(String id) throws SQLException;
 
