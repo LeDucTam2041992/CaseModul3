@@ -19,6 +19,7 @@ public class ProductDAO implements IProductDAO {
     private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
     private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special from products where id = ?";
     private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
+    private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
     private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =? where id = ?;";
@@ -126,6 +127,27 @@ public class ProductDAO implements IProductDAO {
             printSQLException(e);
         }
         return producers;
+    }
+
+    @Override
+    public List<Product> sortProductByProducer(String special, String producer) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SORT_PRODUCT_BY_PRODUCER);) {
+            preparedStatement.setString(1, special);
+            preparedStatement.setString(2, producer);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String imgUrl = rs.getString("imgUrl");
+                int price = rs.getInt("price");
+                products.add(new Product(id, name, imgUrl, special, producer, price));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
 

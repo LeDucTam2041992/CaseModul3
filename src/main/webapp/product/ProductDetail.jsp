@@ -56,14 +56,7 @@
         </form>
     </div>
 </nav>
-<header class="bg-light" style="height: 100px"></header>
-<ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
-    <c:forEach items="${requestScope['producers']}" var="producer">
-        <li class="nav-item border">
-            <a class="nav-link" href="/products?action=sort&nameSort=${producer}">${producer}</a>
-        </li>
-    </c:forEach>
-</ul>
+<header class="bg-light" style="height: 200px"></header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">

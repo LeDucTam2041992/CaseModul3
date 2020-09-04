@@ -49,12 +49,33 @@ public class Servlet extends HttpServlet {
                 break;
             case "delete":
                 break;
+            case "sort":
+                sortProductByProducer(request, response);
+                break;
             case "show":
                 showProduct(request, response);
                 break;
             default:
                 listProducts(request, response);
                 break;
+        }
+    }
+
+    private void sortProductByProducer(HttpServletRequest request, HttpServletResponse response) {
+        String spec = request.getParameter("spec");
+        String producer = request.getParameter("nameSort");
+        List<Product> productList = productDAO.sortProductByProducer(spec,producer);
+        List<String> producers = productDAO.selectAllProducer(spec);
+        request.setAttribute("listProduct", productList);
+        request.setAttribute("producers", producers);
+        request.setAttribute("spec", spec);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("product/listProduct.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -85,6 +106,7 @@ public class Servlet extends HttpServlet {
         }
         List<Product> listProduct = productDAO.selectAlProduct(special);
         List<String> producers = productDAO.selectAllProducer(special);
+        request.setAttribute("spec", special);
         request.setAttribute("producers", producers);
         request.setAttribute("listProduct", listProduct);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/listProduct.jsp");

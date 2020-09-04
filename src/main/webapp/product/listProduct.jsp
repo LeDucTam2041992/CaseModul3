@@ -60,7 +60,7 @@
 <ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
     <c:forEach items="${requestScope['producers']}" var="producer">
         <li class="nav-item border">
-            <a class="nav-link" href="/products?action=sort&nameSort=${producer}">${producer}</a>
+            <a class="nav-link" href="/products?action=sort&nameSort=${producer}&spec=${requestScope['spec']}">${producer}</a>
         </li>
     </c:forEach>
 </ul>
