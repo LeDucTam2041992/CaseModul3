@@ -55,7 +55,7 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-        <button type="button" class="lg ml-5" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+        <button class="lg ml-5" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
         <div id="id01" class="modal">
             <form class="modal-content animate" action="/products?action=login" method="post">
                 <div class="imgcontainer">

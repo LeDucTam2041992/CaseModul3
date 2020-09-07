@@ -22,7 +22,7 @@ public class ProductDAO implements IProductDAO {
     private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
-    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =? where id = ?;";
+    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =?, special = ?, producer = ? where id = ?;";
 
     public ProductDAO() {
     }
@@ -163,7 +163,17 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public boolean updateProduct(Product product) throws SQLException {
-        return false;
+        boolean rowUpdated;
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCTS_SQL);) {
+            statement.setString(1, product.getName());
+            statement.setString(2, product.getImgUrl());
+            statement.setInt(3, product.getPrice());
+            statement.setString(4, product.getSpecial());
+            statement.setString(5, product.getProducer());
+            statement.setString(6, product.getId());
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
     }
 
     private void printSQLException(SQLException ex) {

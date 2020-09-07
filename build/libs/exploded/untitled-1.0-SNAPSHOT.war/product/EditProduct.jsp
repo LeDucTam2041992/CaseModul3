@@ -17,6 +17,7 @@
             box-sizing: border-box;
         }
     </style>
+    <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -58,31 +59,34 @@
 </nav>
 <header class="bg-light" style="height: 200px"></header>
 <section>
-    <div class="row m-auto" style="width: 85%">
-        <div class="col-sm-6 border text-center">
-            <h5>${requestScope['product'].getName()}</h5>
-            <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
-            <p>Price : </p>
-            <input type="text" class="form-control, text-center" name="${requestScope['product'].getPrice()}" value="${requestScope['product'].getPrice()}"> Vnd
-        </div>
-        <div class="col-sm-6 border">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">Thong so ky thuat</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach items="${requestScope['specifications']}" var="specification">
+    <form method="post" action="/products?action=edit&id=${requestScope['product'].getId()}">
+        <div class="row m-auto" style="width: 85%">
+            <div class="col-sm-6 border text-center">
+                <h5>${requestScope['product'].getName()}</h5>
+                <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
+                <p>Price : </p>
+                <input type="text" class="form-control, text-center" name="price" value="${requestScope['product'].getPrice()}"> Vnd
+            </div>
+            <div class="col-sm-6 border">
+                <table class="table">
+                    <thead>
                     <tr>
-                        <td scope="row">${specification[0]}</td>
-                        <td><input type="text" class="form-control" name="${specification[1]}" value="${specification[1]}"></td>
+                        <th scope="col">Thong so ky thuat</th>
                     </tr>
-                </c:forEach>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                    <c:forEach items="${requestScope['specifications']}" var="specification">
+                        <tr>
+                            <td scope="row">${specification[0]}</td>
+                            <td><input type="text" class="form-control" name="${specification[1]}" value="${specification[1]}"></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+        <button type="submit" class="lg m-auto">UpDate</button>
+    </form>
 </section>
 <footer class="footer bg-dark" style="height: 100px"></footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

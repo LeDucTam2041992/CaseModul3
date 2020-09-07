@@ -33,6 +33,7 @@ public class Servlet extends HttpServlet {
             case "create":
                 break;
             case "edit":
+                updateProduct(request, response);
                 break;
             case "delete":
                 break;
@@ -40,8 +41,6 @@ public class Servlet extends HttpServlet {
                 break;
         }
     }
-
-
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
@@ -88,6 +87,26 @@ public class Servlet extends HttpServlet {
         request.setAttribute("producers", producers);
         request.setAttribute("product", product);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/EditProduct.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateProduct(HttpServletRequest request, HttpServletResponse response){
+        String id = request.getParameter("id");
+        int price = Integer.parseInt(request.getParameter("price"));
+        Product product = productDAO.selectProduct(id);
+        product.setPrice(price);
+        try {
+            productDAO.updateProduct(product);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("product/listProduct.jsp");
         try {
             dispatcher.forward(request, response);
         } catch (ServletException e) {
