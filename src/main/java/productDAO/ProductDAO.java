@@ -15,12 +15,13 @@ public class ProductDAO implements IProductDAO {
 
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products" + "  (id, name, imgUrl, price) VALUES " +
             " (?, ?, ?);";
-
     private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
     private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special,producer from products where id = ?";
     private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
     private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
+    private static final String SELECT_SPECSLAPTOP = "select * from speclaptop where productId = ?";
+    private static final String SELECT_SPECSTABLET = "select * from spectablet where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
     private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price = ?, special = ?, producer = ? where id = ?;";
     private static final String UPDATE_SPECS_SM = "update specsmartphone set screen = ?, operaSystem =?, cameraFont = ?, " +
@@ -93,6 +94,40 @@ public class ProductDAO implements IProductDAO {
             printSQLException(e);
         }
         return specSmartphone;
+    }
+
+    public List<String[]> selectSpecLaptop(String productId) {
+        List<String[]> specLaptop = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SPECSLAPTOP);) {
+            preparedStatement.setString(1, productId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                specLaptop.add(new String[]{"CPU", rs.getString("cpu")});
+                specLaptop.add(new String[]{"RAM", rs.getString("ram")});
+                specLaptop.add(new String[]{"DRIVE", rs.getString("drive")});
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return specLaptop;
+    }
+
+    public List<String[]> selectSpecTablet(String productId) {
+        List<String[]> specTablet = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SPECSTABLET);) {
+            preparedStatement.setString(1, productId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                specTablet.add(new String[]{"SCREEN", rs.getString("screen")});
+                specTablet.add(new String[]{"OPERA SYSTEM", rs.getString("operaSystem")});
+                specTablet.add(new String[]{"CPU", rs.getString("cpu")});
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return specTablet;
     }
 
     @Override

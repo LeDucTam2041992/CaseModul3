@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(name = "Servlet", urlPatterns = "/products")
@@ -145,8 +146,17 @@ public class Servlet extends HttpServlet {
         String id = request.getParameter("id");
         Product product = productDAO.selectProduct(id);
         List<String> producers = productDAO.selectAllProducer(product.getSpecial());
-        List<String[]> specSmartphone = productDAO.selectSpecSm(id);
-        request.setAttribute("specifications", specSmartphone);
+        List<String[]> specProduct = new ArrayList<>();
+        if(product.getSpecial().equals("smartphone")) {
+            specProduct = productDAO.selectSpecSm(id);
+        }
+        if(product.getSpecial().equals("laptop")) {
+            specProduct = productDAO.selectSpecLaptop(id);
+        }
+        if(product.getSpecial().equals("tablet")) {
+            specProduct = productDAO.selectSpecTablet(id);
+        }
+        request.setAttribute("specifications", specProduct);
         request.setAttribute("producers", producers);
         request.setAttribute("product", product);
         RequestDispatcher dispatcher = request.getRequestDispatcher("product/ProductDetail.jsp");
