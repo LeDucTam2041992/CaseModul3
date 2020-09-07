@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 @WebServlet(name = "Servlet", urlPatterns = "/products")
@@ -26,6 +27,9 @@ public class Servlet extends HttpServlet {
             action = "";
         }
         switch (action){
+            case "login":
+                login(request, response);
+                break;
             case "create":
                 break;
             case "edit":
@@ -37,6 +41,8 @@ public class Servlet extends HttpServlet {
         }
     }
 
+
+
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         if(action == null){
@@ -46,8 +52,10 @@ public class Servlet extends HttpServlet {
             case "create":
                 break;
             case "edit":
+                editProduct(request, response);
                 break;
             case "delete":
+                deleteProduct(request, response);
                 break;
             case "sort":
                 sortProductByProducer(request, response);
@@ -58,6 +66,34 @@ public class Servlet extends HttpServlet {
             default:
                 listProducts(request, response);
                 break;
+        }
+    }
+
+    private void deleteProduct(HttpServletRequest request, HttpServletResponse response) {
+//        String id = request.getParameter("id");
+//        try {
+//            productDAO.deleteProduct(id);
+//        } catch (SQLException throwables) {
+//            throwables.printStackTrace();
+//        }
+//        listProducts(request, response);
+    }
+
+    private void editProduct(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+        Product product = productDAO.selectProduct(id);
+        List<String> producers = productDAO.selectAllProducer(product.getSpecial());
+        List<String[]> specSmartphone = productDAO.selectSpecSm(id);
+        request.setAttribute("specifications", specSmartphone);
+        request.setAttribute("producers", producers);
+        request.setAttribute("product", product);
+        RequestDispatcher dispatcher = request.getRequestDispatcher("product/EditProduct.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -97,7 +133,16 @@ public class Servlet extends HttpServlet {
         }
     }
 
-
+    private void login(HttpServletRequest request, HttpServletResponse response) {
+        String account = request.getParameter("uname");
+        String password = request.getParameter("psw");
+        boolean isAdmin = false;
+        if(account.equals("11111")&&password.equals("12345")){
+            isAdmin = true;
+        }
+        request.setAttribute("admin", isAdmin);
+        listProducts(request,response);
+    }
 
     private void listProducts(HttpServletRequest request, HttpServletResponse response) {
         String special = request.getParameter("special");
