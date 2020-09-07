@@ -78,7 +78,7 @@
                     <c:forEach items="${requestScope['specifications']}" var="specification">
                         <tr>
                             <td scope="row">${specification[0]}</td>
-                            <td><input type="text" class="form-control" name="${specification[1]}" value="${specification[1]}"></td>
+                            <td><input type="text" class="form-control" name="${specification[0]}" value="${specification[1]}"></td>
                         </tr>
                     </c:forEach>
                     </tbody>

@@ -33,7 +33,11 @@ public class Servlet extends HttpServlet {
             case "create":
                 break;
             case "edit":
-                updateProduct(request, response);
+                try {
+                    updateProduct(request, response);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
                 break;
             case "delete":
                 break;
@@ -96,24 +100,27 @@ public class Servlet extends HttpServlet {
         }
     }
 
-    private void updateProduct(HttpServletRequest request, HttpServletResponse response){
+    private void updateProduct(HttpServletRequest request, HttpServletResponse response) throws SQLException {
         String id = request.getParameter("id");
         int price = Integer.parseInt(request.getParameter("price"));
         Product product = productDAO.selectProduct(id);
+        if(product.getSpecial().equals("smartphone")) {
+            String screen= request.getParameter("SCREEN");
+            String operaSystem = request.getParameter("OPERA SYSTEM");
+            String cameraFont = request.getParameter("CAMERA FONT");
+            String cameraEnd = request.getParameter("CAMERA BACK");
+            String cpu = request.getParameter("CPU");
+            String ram = request.getParameter("RAM");
+            String memory = request.getParameter("MEMORY");
+            String sim = request.getParameter("SIM");
+            String pin = request.getParameter("PIN");
+            SpecSmartphone specSmartphone = new SpecSmartphone(id, screen, operaSystem, cameraFont, cameraEnd, cpu, ram,memory
+            , sim, pin);
+            productDAO.updateSpecSM(specSmartphone);
+        }
         product.setPrice(price);
-        try {
-            productDAO.updateProduct(product);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        RequestDispatcher dispatcher = request.getRequestDispatcher("product/listProduct.jsp");
-        try {
-            dispatcher.forward(request, response);
-        } catch (ServletException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        productDAO.updateProduct(product);
+        listProducts(request, response);
     }
 
     private void sortProductByProducer(HttpServletRequest request, HttpServletResponse response) {

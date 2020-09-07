@@ -17,12 +17,14 @@ public class ProductDAO implements IProductDAO {
             " (?, ?, ?);";
 
     private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
-    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special from products where id = ?";
+    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special,producer from products where id = ?";
     private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
     private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
-    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =?, special = ?, producer = ? where id = ?;";
+    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price = ?, special = ?, producer = ? where id = ?;";
+    private static final String UPDATE_SPECS_SM = "update specsmartphone set screen = ?, operaSystem =?, cameraFont = ?, " +
+            "cameraEnd = ?, cpu = ?, ram = ?, memory = ?, sim = ?, pin = ? where productId = ?;";
 
     public ProductDAO() {
     }
@@ -60,7 +62,8 @@ public class ProductDAO implements IProductDAO {
                 String imgUrl = rs.getString("imgUrl");
                 String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                product = new Product(id, name, imgUrl, specil, price);
+                String producer = rs.getString("producer");
+                product = new Product(id, name, imgUrl, specil,producer, price);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -91,6 +94,7 @@ public class ProductDAO implements IProductDAO {
         }
         return specSmartphone;
     }
+
     @Override
     public List<Product> selectAlProduct(String special) {
         List<Product> products = new ArrayList<>();
@@ -171,6 +175,27 @@ public class ProductDAO implements IProductDAO {
             statement.setString(4, product.getSpecial());
             statement.setString(5, product.getProducer());
             statement.setString(6, product.getId());
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
+    }
+
+    public boolean updateSpecSM(SpecSmartphone specSmartphone) throws SQLException {
+        boolean rowUpdated;
+        try (
+            Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(UPDATE_SPECS_SM);) {
+            statement.setString(1,specSmartphone.getScreen());
+            statement.setString(2,specSmartphone.getOperaSystem());
+            statement.setString(3,specSmartphone.getCameraFont());
+            statement.setString(4,specSmartphone.getCameraEnd());
+            statement.setString(5,specSmartphone.getCpu());
+            statement.setString(6,specSmartphone.getRam());
+            statement.setString(7,specSmartphone.getMemory());
+            statement.setString(8,specSmartphone.getSim());
+            statement.setString(9,specSmartphone.getPin());
+            statement.setString(10,specSmartphone.getProductId());
+            System.out.println(statement.toString());
             rowUpdated = statement.executeUpdate() > 0;
         }
         return rowUpdated;
