@@ -26,17 +26,17 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link " href="#">Smartphone<span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link " href="/products?special=smartphone">Smartphone</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Laptop</a>
+                <a class="nav-link" href="/products?special=laptop">Laptop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Tablet</a>
+                <a class="nav-link" href="/products?special=tablet">Tablet</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Headphone</a>
+                <a class="nav-link" href="/products?special=headphone">Headphone</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -67,10 +67,26 @@
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
-            <h3>${requestScope['product'].getName()}</h3>
+            <h5>${requestScope['product'].getName()}</h5>
             <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
         </div>
-        <div class="col-sm-6 border"></div>
+        <div class="col-sm-6 border">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Thong so ky thuat</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <c:forEach items="${requestScope['specifications']}" var="specification">
+                        <tr>
+                            <td scope="row">${specification[0]}</td>
+                            <td>${specification[1]}</td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 <footer class="footer bg-dark" style="height: 100px"></footer>

@@ -1,13 +1,14 @@
 package model;
 
 public class Product {
-    private String id, name, imgUrl;
+    private String id, name, imgUrl, special;
     private int price;
 
-    public Product(String id, String name, String imgUrl, int price) {
+    public Product(String id, String name, String imgUrl, String special, int price) {
         this.id = id;
         this.name = name;
         this.imgUrl = imgUrl;
+        this.special = special;
         this.price = price;
     }
 
@@ -36,6 +37,14 @@ public class Product {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public String getSpecial() {
+        return special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
     }
 
     public int getPrice() {

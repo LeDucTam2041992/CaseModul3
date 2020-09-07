@@ -20,23 +20,23 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Tech Shop</a>
+    <a class="navbar-brand" href="/products">Tech Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link " href="#">Smartphone<span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link " href="/products?special=smartphone">Smartphone</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Laptop</a>
+                <a class="nav-link" href="/products?special=laptop">Laptop</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Tablet</a>
+                <a class="nav-link" href="/products?special=tablet">Tablet</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Headphone</a>
+                <a class="nav-link" href="/products?special=headphone">Headphone</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -80,8 +80,8 @@
                 <tbody>
                     <c:forEach items="${requestScope['specifications']}" var="specification">
                         <tr>
-                            <td scope="row">Dung lượng pin:</td>
-                            <td>Mark</td>
+                            <td scope="row">${specification[0]}</td>
+                            <td>${specification[1]}</td>
                         </tr>
                     </c:forEach>
                 </tbody>

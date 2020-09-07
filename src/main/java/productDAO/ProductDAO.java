@@ -64,6 +64,21 @@ public class ProductDAO implements IProductDAO{
     }
 
     @Override
+    public List<String[]> selectSpecSm(String productId) {
+        return null;
+    }
+
+    @Override
+    public List<Product> selectAlProduct(String special) {
+        return null;
+    }
+
+    @Override
+    public List<String> selectAllProducer(String special) {
+        return null;
+    }
+
+    @Override
     public List<Product> selectAlProduct() {
         // using try-with-resources to avoid closing resources (boiler plate code)
         List<Product> products = new ArrayList<>();
