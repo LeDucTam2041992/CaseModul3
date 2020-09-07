@@ -1,7 +1,7 @@
 package model;
 
 public class Product {
-    private String id, name, imgUrl, special;
+    private String id, name, imgUrl, special, producer;
     private int price;
 
     public Product(String id, String name, String imgUrl, String special, int price) {
@@ -12,7 +12,23 @@ public class Product {
         this.price = price;
     }
 
+    public Product(String id, String name, String imgUrl, String special, String producer, int price) {
+        this.id = id;
+        this.name = name;
+        this.imgUrl = imgUrl;
+        this.special = special;
+        this.producer = producer;
+        this.price = price;
+    }
     public Product() {
+    }
+
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
     }
 
     public String getId() {

@@ -17,6 +17,8 @@ public interface IProductDAO {
 
     public List<String> selectAllProducer(String special);
 
+    public List<Product> sortProductByProducer(String special, String producer);
+
     public boolean deleteProduct(String id) throws SQLException;
 
     public boolean updateProduct(Product user) throws SQLException;

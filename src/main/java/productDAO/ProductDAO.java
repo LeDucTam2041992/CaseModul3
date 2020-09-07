@@ -1,22 +1,26 @@
 package productDAO;
 
 import model.Product;
+import model.SpecSmartphone;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class ProductDAO implements IProductDAO{
-    private String jdbcURL = "jdbc:mysql://localhost:3306/casemd3?allowPublicKeyRetrieval=true&useSSL=false";
+public class ProductDAO implements IProductDAO {
+    private String jdbcURL = "jdbc:mysql://localhost:3306/casemd3?useSSL=false";
     private String jdbcUsername = "root";
-    private String jdbcPassword = "troidoconmua1994";
+    private String jdbcPassword = "Sakurasaoyran204";
 
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products" + "  (id, name, imgUrl, price) VALUES " +
             " (?, ?, ?);";
 
-    private static final String SELECT_ALL_PRODUCER = "select distinct producer from products";
-    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price from products where id = ?";
-    private static final String SELECT_ALL_PRODUCTS = "select * from products";
+    private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
+    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special from products where id = ?";
+    private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
+    private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
+    private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
     private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =? where id = ?;";
 
@@ -27,7 +31,7 @@ public class ProductDAO implements IProductDAO{
     protected Connection getConnection() {
         Connection connection = null;
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
@@ -54,8 +58,9 @@ public class ProductDAO implements IProductDAO{
             while (rs.next()) {
                 String name = rs.getString("name");
                 String imgUrl = rs.getString("imgUrl");
+                String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                product = new Product(id, name, imgUrl, price);
+                product = new Product(id, name, imgUrl, specil, price);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -65,39 +70,41 @@ public class ProductDAO implements IProductDAO{
 
     @Override
     public List<String[]> selectSpecSm(String productId) {
-        return null;
+        List<String[]> specSmartphone = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SPECSMARTPHONE);) {
+            preparedStatement.setString(1, productId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                specSmartphone.add(new String[]{"SCREEN", rs.getString("screen")});
+                specSmartphone.add(new String[]{"OPERA SYSTEM", rs.getString("operaSystem")});
+                specSmartphone.add(new String[]{"CAMERA FONT", rs.getString("cameraFont")});
+                specSmartphone.add(new String[]{"CAMERA BACK", rs.getString("cameraEnd")});
+                specSmartphone.add(new String[]{"CPU", rs.getString("cpu")});
+                specSmartphone.add(new String[]{"RAM", rs.getString("ram")});
+                specSmartphone.add(new String[]{"MEMORY", rs.getString("memory")});
+                specSmartphone.add(new String[]{"SIM", rs.getString("sim")});
+                specSmartphone.add(new String[]{"PIN", rs.getString("pin")});
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return specSmartphone;
     }
-
     @Override
     public List<Product> selectAlProduct(String special) {
-        return null;
-    }
-
-    @Override
-    public List<String> selectAllProducer(String special) {
-        return null;
-    }
-
-    @Override
-    public List<Product> selectAlProduct() {
-        // using try-with-resources to avoid closing resources (boiler plate code)
         List<Product> products = new ArrayList<>();
-        // Step 1: Establishing a Connection
         try (Connection connection = getConnection();
-
-             // Step 2:Create a statement using connection object
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCTS);) {
-            System.out.println(preparedStatement);
-            // Step 3: Execute the query or update query
+            preparedStatement.setString(1, special);
             ResultSet rs = preparedStatement.executeQuery();
-
-            // Step 4: Process the ResultSet object.
             while (rs.next()) {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String imgUrl = rs.getString("imgUrl");
+                String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                products.add(new Product(id, name, imgUrl, price));
+                products.add(new Product(id, name, imgUrl, specil, price));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -106,10 +113,11 @@ public class ProductDAO implements IProductDAO{
     }
 
     @Override
-    public List<String> selectAllProducer() {
+    public List<String> selectAllProducer(String special) {
         List<String> producers = new ArrayList<>();
         try (Connection connection = getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SELECT_ALL_PRODUCER);) {
+            preparedStatement.setString(1,special);
             ResultSet rs = preparedStatement.executeQuery();
             while (rs.next()) {
                 String producer = rs.getString("producer");
@@ -119,6 +127,27 @@ public class ProductDAO implements IProductDAO{
             printSQLException(e);
         }
         return producers;
+    }
+
+    @Override
+    public List<Product> sortProductByProducer(String special, String producer) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SORT_PRODUCT_BY_PRODUCER);) {
+            preparedStatement.setString(1, special);
+            preparedStatement.setString(2, producer);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String imgUrl = rs.getString("imgUrl");
+                int price = rs.getInt("price");
+                products.add(new Product(id, name, imgUrl, special, producer, price));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
     }
 
 

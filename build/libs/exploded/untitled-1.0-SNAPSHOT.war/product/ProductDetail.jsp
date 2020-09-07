@@ -20,7 +20,7 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Tech Shop</a>
+    <a class="navbar-brand" href="/products">Tech Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -56,14 +56,7 @@
         </form>
     </div>
 </nav>
-<header class="bg-light" style="height: 100px"></header>
-<ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
-    <c:forEach items="${requestScope['producers']}" var="producer">
-        <li class="nav-item border">
-            <a class="nav-link" href="/products?action=sort&nameSort=${producer}">${producer}</a>
-        </li>
-    </c:forEach>
-</ul>
+<header class="bg-light" style="height: 200px"></header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
