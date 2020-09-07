@@ -9,9 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductDAO implements IProductDAO {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/casemd3?useSSL=false";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/casemd3?allowPublicKeyRetrieval=true&useSSL=false";
     private String jdbcUsername = "root";
-    private String jdbcPassword = "Sakurasaoyran204";
+    private String jdbcPassword = "troidoconmua1994";
 
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products" + "  (id, name, imgUrl, price) VALUES " +
             " (?, ?, ?);";
