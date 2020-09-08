@@ -102,9 +102,8 @@ public class ProductDAO implements IProductDAO {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String imgUrl = rs.getString("imgUrl");
-                String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                products.add(new Product(id, name, imgUrl, specil, price));
+                products.add(new Product(id, name, imgUrl, special, price));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -153,11 +152,17 @@ public class ProductDAO implements IProductDAO {
 
     @Override
     public boolean deleteProduct(String id) throws SQLException {
-        return false;
+        boolean rowDeleted;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCTS_SQL);) {
+            statement.setString(1, id);
+            rowDeleted = statement.executeUpdate() > 0;
+        }
+        return rowDeleted;
     }
 
     @Override
-    public boolean updateProduct(Product user) throws SQLException {
+    public boolean updateProduct(Product product) throws SQLException {
         return false;
     }
 

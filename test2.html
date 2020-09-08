@@ -1,35 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <link rel="stylesheet" href="../Css/login.css">
+    <link rel="stylesheet" href="../css/login.css">
     <style>
         *{
             box-sizing: border-box;
         }
+
     </style>
 </head>
 <body>
-
-
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Navbar</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/products">Tech Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link " href="#">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item">
+                <a class="nav-link " href="/products?special=smartphone">Smartphone</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
+                <a class="nav-link" href="/products?special=laptop">Laptop</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/products?special=tablet">Tablet</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/products?special=headphone">Headphone</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Dropdown
+                    Orther
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" href="#">Action</a>
@@ -38,21 +43,14 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
             </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
-    </div>
-</nav>
-<header class="row" style="height: 150px">
-
-        <button class="lg" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
+        <button type="button" class="lg ml-5" onclick="document.getElementById('id01').style.display='block'" style="width:auto;">Login</button>
         <div id="id01" class="modal">
-            <form class="modal-content animate" action="/action_page.php" method="post">
+            <form class="modal-content animate" action="/products?action=login" method="post">
                 <div class="imgcontainer">
                     <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
                     <img src="https://dogily.vn/wp-content/uploads/2019/08/Hon-ca-the-gioi-anh-cho-Anuko.jpg" alt="Avatar" class="avatar">
@@ -76,59 +74,38 @@
             </form>
         </div>
     </div>
-</header>
-<div class="container-fluid">
-<ul class="nav nav-fill">
-    <li class="nav-item border">
-        <a class="nav-link active" href="#">Apple</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">Samsung</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">Xiaomi</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">Huawei</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">OPPO</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">Sony</a>
-    </li>
-    <li class="nav-item border">
-        <a class="nav-link" href="#">Vinsmart</a>
-    </li>
+</nav>
+<header class="bg-light" style="height: 100px"></header>
+<ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
+    <c:forEach items="${requestScope['producers']}" var="producer">
+        <li class="nav-item border">
+            <a class="nav-link" href="/products?action=sort&nameSort=${producer}&spec=${requestScope['spec']}">${producer}</a>
+        </li>
+    </c:forEach>
 </ul>
-</div>
-<div class="row m-auto" style="width: 85%">
-    <div class="col-sm-6 border text-center">
-        <h5>${requestScope['product'].getName()}</h5>
-        <img class="img-fluid" src="https://cdn.tgdd.vn/Products/Images/42/217935/samsung-galaxy-s20-400x460-hong-400x460.png">
+<section class="row">
+    <div class="row m-auto" style="width: 85%">
+        <c:forEach items="${requestScope['listProduct']}" var="product">
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-2 border">
+                <a href="/products?action=show&id=${product.getId()}">
+                    <img class="img-fluid py-3" src="${product.getImgUrl()}" alt="No image">
+                    <p class="card-title text-dark">${product.getName()}</p>
+                    <p class="card-text text-danger mb-3">Price : ${product.getPrice()} Vnd</p>
+                </a>
+                <c:if test="${requestScope['admin']}">
+                    <div class="centerBlock">
+                        <a class="border bg-light text-dark m-2" href="/products?action=edit&id=${product.getId()}">Edit</a>
+                        <a class="border bg-light text-dark m-2" href="/products?action=delete&id=${product.getId()}">Delete</a>
+                    </div>
+                </c:if>
+
+            </div>
+        </c:forEach>
     </div>
-    <div class="col-sm-6 border">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Thong so ky thuat</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td scope="row">Dung lượng pin:</td>
-                <td>Mark</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
+</section>
 <footer class="footer bg-light" style="height: 100px"></footer>
 <script>
-    // Get the modal
     var modal = document.getElementById('id01');
-
-    // When the user clicks anywhere outside of the modal, close it
     window.onclick = function(event) {
         if (event.target == modal) {
             modal.style.display = "none";

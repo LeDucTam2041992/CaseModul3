@@ -19,7 +19,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/products">Tech Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -62,6 +62,7 @@
         <div class="col-sm-6 border text-center">
             <h5>${requestScope['product'].getName()}</h5>
             <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
+            <h5 class="mt-5">Price : ${requestScope['product'].getPrice()} Vnd</h5>
         </div>
         <div class="col-sm-6 border">
             <table class="table">

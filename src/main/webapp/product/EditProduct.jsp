@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: TamLeDuc
-  Date: 9/3/2020
-  Time: 2:56 PM
+  Date: 9/7/2020
+  Time: 11:41 AM
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -16,7 +16,7 @@
         *{
             box-sizing: border-box;
         }
-        #header{
+        .bg-light{
             background: url("https://nypost.com/wp-content/uploads/sites/2/2019/09/somethings-killing-galaxys2.jpg?quality=80&strip=all");
         }
     </style>
@@ -59,18 +59,14 @@
         </form>
     </div>
 </nav>
-<div id="header" style="height: 200px">
-</div>
-<%--<header class="bg-light" style="height: 200px">--%>
-<%--    <div id="example1">--%>
-<%--    </div>--%>
-<%--</header>--%>
+<header class="bg-light" style="height: 200px"></header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
             <h5>${requestScope['product'].getName()}</h5>
             <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
-            <h5 class="mt-5">Price : ${requestScope['product'].getPrice()} Vnd</h5>
+            <p>Price : </p>
+            <input type="text" class="form-control, text-center" name="${requestScope['product'].getPrice()}" value="${requestScope['product'].getPrice()}"> Vnd
         </div>
         <div class="col-sm-6 border">
             <table class="table">
@@ -80,12 +76,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                    <c:forEach items="${requestScope['specifications']}" var="specification">
-                        <tr>
-                            <td scope="row">${specification[0]}</td>
-                            <td>${specification[1]}</td>
-                        </tr>
-                    </c:forEach>
+                <c:forEach items="${requestScope['specifications']}" var="specification">
+                    <tr>
+                        <td scope="row">${specification[0]}</td>
+                        <td><input type="text" class="form-control" name="${specification[1]}" value="${specification[1]}"></td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
         </div>
