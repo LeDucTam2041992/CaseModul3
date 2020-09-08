@@ -1,10 +1,12 @@
 package productDAO;
 
 import model.Product;
+import model.SpecSmartphone;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ProductDAO implements IProductDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/demo?useSSL=false";
@@ -13,13 +15,17 @@ public class ProductDAO implements IProductDAO {
 
     private static final String INSERT_PRODUCT_SQL = "INSERT INTO products" + "  (id, name, imgUrl, price) VALUES " +
             " (?, ?, ?);";
-
     private static final String SELECT_ALL_PRODUCER = "select distinct producer from products where special = ?";
-    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special from products where id = ?";
+    private static final String SELECT_PRODUCT_BY_ID = "select id,name,imgUrl,price,special,producer from products where id = ?";
     private static final String SELECT_ALL_PRODUCTS = "select * from products where special = ?";
+    private static final String SORT_PRODUCT_BY_PRODUCER = "select * from products where special = ? and producer = ?";
     private static final String SELECT_SPECSMARTPHONE = "select * from specsmartphone where productId = ?";
+    private static final String SELECT_SPECSLAPTOP = "select * from speclaptop where productId = ?";
+    private static final String SELECT_SPECSTABLET = "select * from spectablet where productId = ?";
     private static final String DELETE_PRODUCTS_SQL = "delete from products where id = ?;";
-    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price =? where id = ?;";
+    private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price = ?, special = ?, producer = ? where id = ?;";
+    private static final String UPDATE_SPECS_SM = "update specsmartphone set screen = ?, operaSystem =?, cameraFont = ?, " +
+            "cameraEnd = ?, cpu = ?, ram = ?, memory = ?, sim = ?, pin = ? where productId = ?;";
 
     public ProductDAO() {
     }
@@ -57,7 +63,8 @@ public class ProductDAO implements IProductDAO {
                 String imgUrl = rs.getString("imgUrl");
                 String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                product = new Product(id, name, imgUrl, specil, price);
+                String producer = rs.getString("producer");
+                product = new Product(id, name, imgUrl, specil,producer, price);
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -88,6 +95,41 @@ public class ProductDAO implements IProductDAO {
         }
         return specSmartphone;
     }
+
+    public List<String[]> selectSpecLaptop(String productId) {
+        List<String[]> specLaptop = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SPECSLAPTOP);) {
+            preparedStatement.setString(1, productId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                specLaptop.add(new String[]{"CPU", rs.getString("cpu")});
+                specLaptop.add(new String[]{"RAM", rs.getString("ram")});
+                specLaptop.add(new String[]{"DRIVE", rs.getString("drive")});
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return specLaptop;
+    }
+
+    public List<String[]> selectSpecTablet(String productId) {
+        List<String[]> specTablet = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SELECT_SPECSTABLET);) {
+            preparedStatement.setString(1, productId);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                specTablet.add(new String[]{"SCREEN", rs.getString("screen")});
+                specTablet.add(new String[]{"OPERA SYSTEM", rs.getString("operaSystem")});
+                specTablet.add(new String[]{"CPU", rs.getString("cpu")});
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return specTablet;
+    }
+
     @Override
     public List<Product> selectAlProduct(String special) {
         List<Product> products = new ArrayList<>();
@@ -99,9 +141,8 @@ public class ProductDAO implements IProductDAO {
                 String id = rs.getString("id");
                 String name = rs.getString("name");
                 String imgUrl = rs.getString("imgUrl");
-                String specil = rs.getString("special");
                 int price = rs.getInt("price");
-                products.add(new Product(id, name, imgUrl, specil, price));
+                products.add(new Product(id, name, imgUrl, special, price));
             }
         } catch (SQLException e) {
             printSQLException(e);
@@ -126,15 +167,73 @@ public class ProductDAO implements IProductDAO {
         return producers;
     }
 
+    @Override
+    public List<Product> sortProductByProducer(String special, String producer) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(SORT_PRODUCT_BY_PRODUCER);) {
+            preparedStatement.setString(1, special);
+            preparedStatement.setString(2, producer);
+            ResultSet rs = preparedStatement.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String name = rs.getString("name");
+                String imgUrl = rs.getString("imgUrl");
+                int price = rs.getInt("price");
+                products.add(new Product(id, name, imgUrl, special, producer, price));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return products;
+    }
+
 
     @Override
     public boolean deleteProduct(String id) throws SQLException {
-        return false;
+        boolean rowDeleted;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCTS_SQL);) {
+            statement.setString(1, id);
+            rowDeleted = statement.executeUpdate() > 0;
+        }
+        return rowDeleted;
     }
 
     @Override
-    public boolean updateProduct(Product user) throws SQLException {
-        return false;
+    public boolean updateProduct(Product product) throws SQLException {
+        boolean rowUpdated;
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCTS_SQL);) {
+            statement.setString(1, product.getName());
+            statement.setString(2, product.getImgUrl());
+            statement.setInt(3, product.getPrice());
+            statement.setString(4, product.getSpecial());
+            statement.setString(5, product.getProducer());
+            statement.setString(6, product.getId());
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
+    }
+
+    public boolean updateSpecSM(SpecSmartphone specSmartphone) throws SQLException {
+        boolean rowUpdated;
+        try (
+                Connection connection = getConnection();
+                PreparedStatement statement = connection.prepareStatement(UPDATE_SPECS_SM);) {
+            statement.setString(1,specSmartphone.getScreen());
+            statement.setString(2,specSmartphone.getOperaSystem());
+            statement.setString(3,specSmartphone.getCameraFont());
+            statement.setString(4,specSmartphone.getCameraEnd());
+            statement.setString(5,specSmartphone.getCpu());
+            statement.setString(6,specSmartphone.getRam());
+            statement.setString(7,specSmartphone.getMemory());
+            statement.setString(8,specSmartphone.getSim());
+            statement.setString(9,specSmartphone.getPin());
+            statement.setString(10,specSmartphone.getProductId());
+            System.out.println(statement.toString());
+            rowUpdated = statement.executeUpdate() > 0;
+        }
+        return rowUpdated;
     }
 
     private void printSQLException(SQLException ex) {

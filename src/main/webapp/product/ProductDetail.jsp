@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/login.css">
     <style>
         *{
             box-sizing: border-box;
@@ -19,7 +20,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="/products">Tech Shop</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -56,25 +57,19 @@
         </form>
     </div>
 </nav>
-<header class="bg-light" style="height: 100px"></header>
-<ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
-    <c:forEach items="${requestScope['producers']}" var="producer">
-        <li class="nav-item border">
-            <a class="nav-link" href="/products?action=sort&nameSort=${producer}">${producer}</a>
-        </li>
-    </c:forEach>
-</ul>
+<header class="bg-light" style="height: 200px"></header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
             <h5>${requestScope['product'].getName()}</h5>
             <img class="img-fluid" src="${requestScope['product'].getImgUrl()}">
+            <h5 class="mt-5">Price : ${requestScope['product'].getPrice()} Vnd</h5>
         </div>
         <div class="col-sm-6 border">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Thông số kỹ thuật</th>
+                    <th scope="col">Thông số kỹ Thuật</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -88,8 +83,13 @@
             </table>
         </div>
     </div>
+    <div class="text-center my-5">
+        <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Buy Now</a>
+        <a href="#" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add to Carts</a>
+    </div>
 </section>
-<footer class="footer bg-dark" style="height: 100px"></footer>
+<footer class="footer bg-dark" style="height: 100px">
+</footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
