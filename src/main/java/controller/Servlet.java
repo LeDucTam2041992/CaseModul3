@@ -101,6 +101,7 @@ public class Servlet extends HttpServlet {
         }
         order.setCustomer(customer);
         productDAO.insertOrder(order);
+        session.removeAttribute("order");
         listProducts(request, response);
     }
 
