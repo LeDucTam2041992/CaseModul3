@@ -1,6 +1,7 @@
 package productDAO;
 
 import model.Customer;
+import model.Order;
 import model.Product;
 import model.SpecSmartphone;
 
@@ -29,7 +30,7 @@ public class ProductDAO implements IProductDAO {
             "cameraEnd = ?, cpu = ?, ram = ?, memory = ?, sim = ?, pin = ? where productId = ?;";
     private static final String SELECT_ALL_CUSTOMERS = "select * from customer";
     private static final String INSERT_CUSTOMERS = "insert into customer (Name, Email, Address, phoneNumber) values (?, ?, ?, ?)";
-
+    private static final String INSERT_ORDER = "insert into orders (customerId, dateOrder) values (?,?)";
     public ProductDAO() {
     }
 
@@ -267,6 +268,17 @@ public class ProductDAO implements IProductDAO {
             printSQLException(e);
         }
         return customers;
+    }
+
+    public void insertOrder(Order order) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDER)) {
+            preparedStatement.setInt(1, Integer.parseInt(order.getCustomer().getId()));
+            preparedStatement.setDate(2, Date.valueOf(java.time.LocalDate.now()));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
     }
 
     private void printSQLException(SQLException ex) {

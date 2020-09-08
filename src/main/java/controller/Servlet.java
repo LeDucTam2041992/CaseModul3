@@ -84,7 +84,23 @@ public class Servlet extends HttpServlet {
         String addressCustomer = request.getParameter("address");
         String phoneCustomer = request.getParameter("phoneNumber");
         Customer customer = new Customer(nameCustomer,emailCustomer,addressCustomer,phoneCustomer);
-        productDAO.insertCustomer(customer);
+        List<Customer> customerList = productDAO.selectAllCustomers();
+        boolean isNewCustomer = false;
+        for (Customer c:customerList) {
+            boolean checkName = nameCustomer.equalsIgnoreCase(c.getName());
+            boolean checkPhoneNumber = phoneCustomer.equalsIgnoreCase(c.getPhoneNumber());
+            if(checkName&&checkPhoneNumber) {
+                isNewCustomer = true;
+                customer.setId(c.getId());
+                break;
+            }
+        }
+        if(!isNewCustomer) {
+            customer.setId((Integer.parseInt(customerList.get(customerList.size()-1).getId())+1)+"");
+            productDAO.insertCustomer(customer);
+        }
+        order.setCustomer(customer);
+        productDAO.insertOrder(order);
         listProducts(request, response);
     }
 
