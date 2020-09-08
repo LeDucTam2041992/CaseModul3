@@ -1,5 +1,7 @@
 package productDAO;
 
+import model.Customer;
+import model.Order;
 import model.Product;
 import model.SpecSmartphone;
 
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ProductDAO implements IProductDAO {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/demo?useSSL=false";
+    private String jdbcURL = "jdbc:mysql://localhost:3306/newdemo?useSSL=false";
     private String jdbcUsername = "root";
     private String jdbcPassword = "123456";
 
@@ -26,7 +28,9 @@ public class ProductDAO implements IProductDAO {
     private static final String UPDATE_PRODUCTS_SQL = "update products set name = ?,imgUrl= ?, price = ?, special = ?, producer = ? where id = ?;";
     private static final String UPDATE_SPECS_SM = "update specsmartphone set screen = ?, operaSystem =?, cameraFont = ?, " +
             "cameraEnd = ?, cpu = ?, ram = ?, memory = ?, sim = ?, pin = ? where productId = ?;";
-
+    private static final String SELECT_ALL_CUSTOMERS = "select * from customer";
+    private static final String INSERT_CUSTOMERS = "insert into customer (Name, Email, Address, phoneNumber) values (?, ?, ?, ?)";
+    private static final String INSERT_ORDER = "insert into orders (customerId, dateOrder) values (?,?)";
     public ProductDAO() {
     }
 
@@ -188,7 +192,6 @@ public class ProductDAO implements IProductDAO {
         return products;
     }
 
-
     @Override
     public boolean deleteProduct(String id) throws SQLException {
         boolean rowDeleted;
@@ -236,6 +239,48 @@ public class ProductDAO implements IProductDAO {
         return rowUpdated;
     }
 
+    public void insertCustomer(Customer customer){
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_CUSTOMERS)) {
+            preparedStatement.setString(1, customer.getName());
+            preparedStatement.setString(2, customer.getEmail());
+            preparedStatement.setString(3, customer.getAddress());
+            preparedStatement.setInt(4,Integer.parseInt(customer.getPhoneNumber()));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
+    public List<Customer> selectAllCustomers(){
+        List<Customer> customers = new ArrayList<>();
+        try (Connection connection = getConnection(); PreparedStatement statement = connection.prepareStatement(SELECT_ALL_CUSTOMERS)) {
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String id = "" + rs.getInt("Id");
+                String name = rs.getString("Name");
+                String email = rs.getString("Email");
+                String address = rs.getString("Address");
+                String phoneNumber ="" + rs.getInt("phoneNumber");
+                customers.add(new Customer(id,name,email,address,phoneNumber));
+            }
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+        return customers;
+    }
+
+    public void insertOrder(Order order) {
+        try (Connection connection = getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(INSERT_ORDER)) {
+            preparedStatement.setInt(1, Integer.parseInt(order.getCustomer().getId()));
+            preparedStatement.setDate(2, Date.valueOf(java.time.LocalDate.now()));
+            System.out.println(preparedStatement);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            printSQLException(e);
+        }
+    }
+
     private void printSQLException(SQLException ex) {
         for (Throwable e : ex) {
             if (e instanceof SQLException) {
@@ -251,4 +296,6 @@ public class ProductDAO implements IProductDAO {
             }
         }
     }
+
+
 }

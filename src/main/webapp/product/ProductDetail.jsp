@@ -57,7 +57,8 @@
         </form>
     </div>
 </nav>
-<header class="bg-light" style="height: 200px"></header>
+<header class="row bg-light" style="height:150px">
+</header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
@@ -69,7 +70,7 @@
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Thông số kỹ Thuật</th>
+                    <th scope="col">Thông số kỹ thuật</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -85,7 +86,7 @@
     </div>
     <div class="text-center my-5">
         <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Buy Now</a>
-        <a href="#" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add to Carts</a>
+        <a href="/products?action=addToCart&ItemBuy=${requestScope['product'].getId()}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add to Carts</a>
     </div>
 </section>
 <footer class="footer bg-dark" style="height: 100px">
