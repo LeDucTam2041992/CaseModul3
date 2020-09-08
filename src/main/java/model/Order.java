@@ -4,13 +4,11 @@ import java.util.List;
 
 public class Order {
     private String id;
-    private int quantity;
     private Customer customer;
     private List<OrderDetail> listOrder;
 
     public Order(String id, int quantity, Customer customer, List<OrderDetail> orderDetails) {
         this.id = id;
-        this.quantity = quantity;
         this.customer = customer;
         this.listOrder = orderDetails;
     }
@@ -24,14 +22,6 @@ public class Order {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
     }
 
     public Customer getCustomer() {

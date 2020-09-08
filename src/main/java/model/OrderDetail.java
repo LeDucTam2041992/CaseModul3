@@ -1,6 +1,7 @@
 package model;
 
 public class OrderDetail {
+    private String id;
     private int quantity, price;
     private Product product;
 

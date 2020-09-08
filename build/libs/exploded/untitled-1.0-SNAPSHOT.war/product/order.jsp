@@ -88,20 +88,20 @@
     <div class="m-auto" style="width: 75%">
         <form action="/products?action=buy" method="post">
             <div class="form-group">
-                <label for="name">Your Name:</label>
-                <input type="text" class="form-control" placeholder="Enter your name" id="name">
+                <label>Your Name:</label>
+                <input type="text" class="form-control" placeholder="Enter your name" name="name">
             </div>
             <div class="form-group">
-                <label for="email">Email address:</label>
-                <input type="email" class="form-control" placeholder="Enter email" id="email">
+                <label>Email address:</label>
+                <input type="email" class="form-control" placeholder="Enter email" name="email">
             </div>
             <div class="form-group">
-                <label for="address">Address:</label>
-                <input type="text" class="form-control" placeholder="Enter address" id="address">
+                <label>Address:</label>
+                <input type="text" class="form-control" placeholder="Enter address" name="address">
             </div>
             <div class="form-group">
-                <label for="phoneNumber">Phone Number:</label>
-                <input type="text" class="form-control" placeholder="Enter your phone" id="phoneNumber">
+                <label>Phone Number:</label>
+                <input type="text" class="form-control" placeholder="Enter your phone" name="phoneNumber">
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>

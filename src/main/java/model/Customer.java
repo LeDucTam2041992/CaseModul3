@@ -11,6 +11,13 @@ public class Customer {
         this.phoneNumber = phoneNumber;
     }
 
+    public Customer(String name, String email, String address, String phoneNumber) {
+        this.name = name;
+        this.email = email;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+    }
+
     public Customer() {
     }
 

@@ -1,5 +1,5 @@
-productDAO/ProductDAO.java
- productDAO.ProductDAO
+model/OrderDetail.java
+ model.OrderDetail
 model/Customer.java
  model.Customer
 model/SpecSmartphone.java
@@ -8,11 +8,11 @@ model/Order.java
  model.Order
 model/Product.java
  model.Product
-controller/Servlet.java
- controller.Servlet
-CharsetFilter.java
- CharsetFilter
 productDAO/IProductDAO.java
  productDAO.IProductDAO
-model/OrderDetail.java
- model.OrderDetail
+CharsetFilter.java
+ CharsetFilter
+productDAO/ProductDAO.java
+ productDAO.ProductDAO
+controller/Servlet.java
+ controller.Servlet

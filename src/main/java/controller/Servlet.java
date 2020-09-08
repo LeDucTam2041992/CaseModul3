@@ -1,9 +1,6 @@
 package controller;
 
-import model.Order;
-import model.OrderDetail;
-import model.Product;
-import model.SpecSmartphone;
+import model.*;
 import productDAO.ProductDAO;
 
 import javax.servlet.RequestDispatcher;
@@ -34,7 +31,8 @@ public class Servlet extends HttpServlet {
             case "login":
                 login(request, response);
                 break;
-            case "create":
+            case "buy":
+                saveOrder(request, response);
                 break;
             case "edit":
                 try {
@@ -76,6 +74,18 @@ public class Servlet extends HttpServlet {
                 listProducts(request, response);
                 break;
         }
+    }
+
+    private void saveOrder(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        String nameCustomer = request.getParameter("name");
+        String emailCustomer = request.getParameter("email");
+        String addressCustomer = request.getParameter("address");
+        String phoneCustomer = request.getParameter("phoneNumber");
+        Customer customer = new Customer(nameCustomer,emailCustomer,addressCustomer,phoneCustomer);
+        productDAO.insertCustomer(customer);
+        listProducts(request, response);
     }
 
     private void showOrder(HttpServletRequest request, HttpServletResponse response) {
