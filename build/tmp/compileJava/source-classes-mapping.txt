@@ -1,12 +1,18 @@
 productDAO/ProductDAO.java
  productDAO.ProductDAO
+model/Customer.java
+ model.Customer
 model/SpecSmartphone.java
  model.SpecSmartphone
+model/Order.java
+ model.Order
 model/Product.java
  model.Product
-controller/Servlet.java
- controller.Servlet
+model/OrderDetail.java
+ model.OrderDetail
 CharsetFilter.java
  CharsetFilter
 productDAO/IProductDAO.java
  productDAO.IProductDAO
+controller/Servlet.java
+ controller.Servlet

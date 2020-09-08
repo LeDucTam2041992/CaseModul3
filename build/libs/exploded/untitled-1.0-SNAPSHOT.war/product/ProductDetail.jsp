@@ -57,7 +57,8 @@
         </form>
     </div>
 </nav>
-<header class="bg-light" style="height: 200px"></header>
+<header class="row bg-light" style="height:150px">
+</header>
 <section>
     <div class="row m-auto" style="width: 85%">
         <div class="col-sm-6 border text-center">
@@ -85,11 +86,10 @@
     </div>
     <div class="text-center my-5">
         <a href="#" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Buy Now</a>
-        <a href="#" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add to Carts</a>
+        <a href="/products?action=addToCart&ItemBuy=${requestScope['product'].getId()}" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Add to Carts</a>
     </div>
 </section>
 <footer class="footer bg-dark" style="height: 100px">
-    <h2 class="text-center">Well Come To My Shop</h2>
 </footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>

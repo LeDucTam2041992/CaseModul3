@@ -1,5 +1,7 @@
 package controller;
 
+import model.Order;
+import model.OrderDetail;
 import model.Product;
 import model.SpecSmartphone;
 import productDAO.ProductDAO;
@@ -10,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -40,8 +43,6 @@ public class Servlet extends HttpServlet {
                     throwables.printStackTrace();
                 }
                 break;
-            case "delete":
-                break;
             default:
                 break;
         }
@@ -53,7 +54,8 @@ public class Servlet extends HttpServlet {
             action = "";
         }
         switch (action){
-            case "create":
+            case "addToCart":
+                addToCart(request, response);
                 break;
             case "edit":
                 editProduct(request, response);
@@ -67,10 +69,81 @@ public class Servlet extends HttpServlet {
             case "show":
                 showProduct(request, response);
                 break;
+            case "showOrder":
+                showOrder(request, response);
+                break;
             default:
                 listProducts(request, response);
                 break;
         }
+    }
+
+    private void showOrder(HttpServletRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Order order = (Order) session.getAttribute("order");
+        if(order!=null) {
+            List<OrderDetail> listItem = order.getListOrder();
+            long total = 0;
+            int count = 0;
+            for (OrderDetail o : listItem) {
+                total += o.getPrice() * o.getQuantity();
+                count += o.getQuantity();
+            }
+            request.setAttribute("listItem", listItem);
+            request.setAttribute("total", total);
+            request.setAttribute("count", count);
+        }
+        RequestDispatcher dispatcher = request.getRequestDispatcher("product/order.jsp");
+        try {
+            dispatcher.forward(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void addToCart(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("ItemBuy");
+        int quantity = 1;
+        Product product = productDAO.selectProduct(id);
+        if(product != null) {
+            if(request.getParameter("quantity")!= null){
+                quantity = Integer.parseInt(request.getParameter("quantity"));
+            }
+        }
+        HttpSession session = request.getSession();
+        if(session.getAttribute("order") == null) {
+            Order order = new Order();
+            List<OrderDetail> listItem = new ArrayList<>();
+            OrderDetail item = new OrderDetail();
+            item.setQuantity(quantity);
+            item.setProduct(product);
+            item.setPrice(product.getPrice());
+            listItem.add(item);
+            order.setListOrder(listItem);
+            session.setAttribute("order", order);
+        } else {
+            Order order = (Order)session.getAttribute("order");
+            List<OrderDetail> listItem = order.getListOrder();
+            boolean check = false;
+            for (OrderDetail o:listItem) {
+                if(o.getProduct().getId().equals(product.getId())) {
+                    o.setQuantity(o.getQuantity()+quantity);
+                    check = true;
+                }
+            }
+            if(!check) {
+                OrderDetail item = new OrderDetail();
+                item.setQuantity(quantity);
+                item.setProduct(product);
+                item.setPrice(product.getPrice());
+                listItem.add(item);
+            }
+            session.setAttribute("order", order);
+        }
+        listProducts(request, response);
     }
 
     private void deleteProduct(HttpServletRequest request, HttpServletResponse response) {
@@ -156,6 +229,7 @@ public class Servlet extends HttpServlet {
         if(product.getSpecial().equals("tablet")) {
             specProduct = productDAO.selectSpecTablet(id);
         }
+        
         request.setAttribute("specifications", specProduct);
         request.setAttribute("producers", producers);
         request.setAttribute("product", product);

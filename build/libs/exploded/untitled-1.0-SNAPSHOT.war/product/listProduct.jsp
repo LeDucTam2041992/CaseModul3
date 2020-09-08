@@ -82,7 +82,9 @@
         </div>
     </div>
 </nav>
-<header class="bg-light" style="height: 100px"></header>
+<header class="row bg-light" style="height: 100px">
+    <a href="/products?action=showOrder" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Carts</a>
+</header>
 <ul class="nav nav-pills nav-justified m-auto" style="width:  85%">
     <c:forEach items="${requestScope['producers']}" var="producer">
         <li class="nav-item border">
@@ -105,7 +107,6 @@
                         <a class="border bg-light text-dark m-2" href="/products?action=delete&id=${product.getId()}">Delete</a>
                     </div>
                 </c:if>
-
             </div>
         </c:forEach>
     </div>
