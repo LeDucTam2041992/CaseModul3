@@ -59,11 +59,12 @@
 </nav>
 <header class="row bg-light" style="height: 100px">
 </header>
-<section class="m-auto" style="width: 85%">
-    <table class="table">
+<section class="m-auto" style="width: 75%">
+    <table class="table mb-5">
         <thead>
         <tr>
             <th scope="col">Product Name</th>
+            <td scope="col">Image</td>
             <th scope="col">Quantity</th>
             <th scope="col">Price</th>
         </tr>
@@ -72,16 +73,39 @@
         <c:forEach items="${requestScope['listItem']}" var="item">
         <tr>
             <td scope="row">${item.getProduct().getName()}</td>
+            <td><img src="${item.getProduct().getImgUrl()}" style="width: 100px; height: 100px"></td>
             <td>${item.getQuantity()}</td>
             <td>${item.getPrice()}</td>
         </tr>
         </c:forEach>
         <tr>
             <td>Total</td>
+            <td></td>
             <td>${requestScope['count']}</td>
             <td>${requestScope['total']} Vnd</td>
         </tr>
     </table>
+    <div class="m-auto" style="width: 75%">
+        <form action="/products?action=buy" method="post">
+            <div class="form-group">
+                <label for="name">Your Name:</label>
+                <input type="text" class="form-control" placeholder="Enter your name" id="name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email address:</label>
+                <input type="email" class="form-control" placeholder="Enter email" id="email">
+            </div>
+            <div class="form-group">
+                <label for="address">Address:</label>
+                <input type="text" class="form-control" placeholder="Enter address" id="address">
+            </div>
+            <div class="form-group">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" class="form-control" placeholder="Enter your phone" id="phoneNumber">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 </section>
 <footer class="footer bg-light" style="height: 100px"></footer>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
