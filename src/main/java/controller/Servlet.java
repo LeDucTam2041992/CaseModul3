@@ -243,6 +243,10 @@ public class Servlet extends HttpServlet {
     }
 
     private void showProduct(HttpServletRequest request, HttpServletResponse response) {
+        User user =(User) request.getSession().getAttribute("admin");
+        if(user!=null) {
+            if(user.getName().equals("11111")) request.setAttribute("admin", true);
+        }
         String id = request.getParameter("id");
         Product product = productDAO.selectProduct(id);
         List<String> producers = productDAO.selectAllProducer(product.getSpecial());
@@ -274,14 +278,21 @@ public class Servlet extends HttpServlet {
         String account = request.getParameter("uname");
         String password = request.getParameter("psw");
         boolean isAdmin = false;
+        User user = null;
         if(account.equals("11111")&&password.equals("12345")){
             isAdmin = true;
+            user = new User("11111","12345");
         }
+        request.getSession().setAttribute("admin",user);
         request.setAttribute("admin", isAdmin);
         listProducts(request,response);
     }
 
     private void listProducts(HttpServletRequest request, HttpServletResponse response) {
+        User user =(User) request.getSession().getAttribute("admin");
+        if(user!=null) {
+            if(user.getName().equals("11111")) request.setAttribute("admin", true);
+        }
         String special = request.getParameter("special");
         if(special == null){
             special = "smartphone";
